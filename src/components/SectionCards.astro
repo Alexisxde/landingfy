@@ -1,0 +1,76 @@
+---
+import { landings } from '@data'
+---
+
+<section class="grid grid-cols-1 gap-4 pt-6 md:grid-cols-2">
+  {
+    landings?.map(({ image, height }) => (
+      <article class="relative bg-gray-900 p-4">
+        <div class="image-container relative h-80 w-full select-none overflow-hidden">
+          <img
+            class:list={`image w-full translate-y-0 bg-cover h-[${height}]`}
+            src={image}
+          />
+        </div>
+      </article>
+    ))
+  }
+</section>
+<style>
+  .paused {
+    animation-play-state: paused;
+  }
+
+  .image-container:hover .image {
+    animation: scrollDown var(--animation-duration) linear forwards;
+    animation-play-state: running;
+  }
+
+  @keyframes scrollDown {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(var(--translateY-end));
+    }
+  }
+</style>
+<script>
+  const containers =
+    document.querySelectorAll<HTMLDivElement>('.image-container')
+
+  const updateAnimation = (container: HTMLDivElement) => {
+    const image = container.querySelector<HTMLImageElement>('.image')
+    if (!image) return
+
+    const containerHeight = container.offsetHeight
+    const imageHeight = image.offsetHeight
+    const translateYEnd = -(imageHeight - containerHeight)
+    const animationDuration = `${imageHeight / 200}s`
+
+    container.style.setProperty('--translateY-end', `${translateYEnd}px`)
+    container.style.setProperty('--animation-duration', animationDuration)
+  }
+
+  const updateAllAnimations = () => {
+    containers.forEach(container => updateAnimation(container))
+  }
+
+  updateAllAnimations()
+  window.addEventListener('resize', updateAllAnimations)
+
+  containers.forEach(container => {
+    const image = container.querySelector<HTMLImageElement>('.image')
+    if (!image) return
+
+    container.addEventListener('mousedown', () => {
+      image.style.animationPlayState = 'paused'
+      container.classList.add('paused')
+    })
+
+    container.addEventListener('mouseup', () => {
+      image.style.animationPlayState = 'running'
+      container.classList.remove('paused')
+    })
+  })
+</script>
