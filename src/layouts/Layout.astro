@@ -17,6 +17,14 @@ const { title } = Astro.props
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <meta property="og:title" content={title} />
+    <meta
+      property="og:description"
+      content="Colección de diseños de landings pages."
+    />
+    <meta property="og:image" content="https://landingfy.vercel.app/image.png" />
+    <meta property="og:url" content="landingfy.vercel.app" />
+    <meta property="og:site__name" content="Landingfy" />
   </head>
   <body>
     <div class="fixed left-0 top-0 -z-10">

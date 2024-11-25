@@ -36,41 +36,43 @@ import { landings } from '@data'
   }
 </style>
 <script>
-  const containers =
-    document.querySelectorAll<HTMLDivElement>('.image-container')
+  document.addEventListener('DOMContentLoaded', () => {
+    const containers =
+      document.querySelectorAll<HTMLDivElement>('.image-container')
 
-  const updateAnimation = (container: HTMLDivElement) => {
-    const image = container.querySelector<HTMLImageElement>('.image')
-    if (!image) return
+    const updateAnimation = (container: HTMLDivElement) => {
+      const image = container.querySelector<HTMLImageElement>('.image')
+      if (!image) return
 
-    const containerHeight = container.offsetHeight
-    const imageHeight = image.offsetHeight
-    const translateYEnd = -(imageHeight - containerHeight)
-    const animationDuration = `${imageHeight / 200}s`
+      const containerHeight = container.offsetHeight
+      const imageHeight = image.offsetHeight
+      const translateYEnd = -(imageHeight - containerHeight)
+      const animationDuration = `${imageHeight / 200}s`
 
-    container.style.setProperty('--translateY-end', `${translateYEnd}px`)
-    container.style.setProperty('--animation-duration', animationDuration)
-  }
+      container.style.setProperty('--translateY-end', `${translateYEnd}px`)
+      container.style.setProperty('--animation-duration', animationDuration)
+    }
 
-  const updateAllAnimations = () => {
-    containers.forEach(container => updateAnimation(container))
-  }
+    const updateAllAnimations = () => {
+      containers.forEach(container => updateAnimation(container))
+    }
 
-  updateAllAnimations()
-  window.addEventListener('resize', updateAllAnimations)
+    updateAllAnimations()
+    window.addEventListener('resize', updateAllAnimations)
 
-  containers.forEach(container => {
-    const image = container.querySelector<HTMLImageElement>('.image')
-    if (!image) return
+    containers.forEach(container => {
+      const image = container.querySelector<HTMLImageElement>('.image')
+      if (!image) return
 
-    container.addEventListener('mousedown', () => {
-      image.style.animationPlayState = 'paused'
-      container.classList.add('paused')
-    })
+      container.addEventListener('mousedown', () => {
+        image.style.animationPlayState = 'paused'
+        container.classList.add('paused')
+      })
 
-    container.addEventListener('mouseup', () => {
-      image.style.animationPlayState = 'running'
-      container.classList.remove('paused')
+      container.addEventListener('mouseup', () => {
+        image.style.animationPlayState = 'running'
+        container.classList.remove('paused')
+      })
     })
   })
 </script>
